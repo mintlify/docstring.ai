@@ -108,7 +108,7 @@ export default function Example() {
                   <Link href="https://marketplace.visualstudio.com/items?itemname=mintlify.document">
                     <button
                       type="button"
-                      className="inline-flex items-center px-3.5 py-2 border border-transparent text-sm leading-4 font-medium rounded-full shadow-sm text-gray-800 bg-white/[0.9] hover:bg-gray-100 shadow"
+                      className="inline-flex items-center px-3.5 py-2 border border-transparent text-sm leading-4 font-medium rounded-full shadow-sm text-white bg-white bg-opacity-25 backdrop-filter backdrop-blur-lg shadow hover:bg-opacity-40"
                     >
                       <Image height={16} width={16} src={vscode} />
                       <p className="ml-2">Install on Visual Studio Code</p>
