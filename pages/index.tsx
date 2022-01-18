@@ -1,20 +1,15 @@
 import { useState } from 'react';
 import Head from 'next/head';
+import Image from 'next/image';
 import Script from 'next/script';
 import Link from 'next/link';
 import { Disclosure } from '@headlessui/react';
 import {
-  MenuIcon,
-  XIcon,
   MailIcon,
 } from '@heroicons/react/outline';
 import CodeEditor from '../components/CodeEditor';
 import Output from '../components/Output';
-
-const navigation = [
-  { name: 'Documentation', href: 'https://nicedoc.io/mintlify/inferapp', current: false },
-  { name: 'Code Search', href: 'https://www.mintlify.com/', current: false },
-];
+import vscode from '../assets/vsc.svg';
 
 const footer = {
   main: [
@@ -109,53 +104,18 @@ export default function Example() {
                         </svg>
                       </div>
                     </div>
-                    <div className="hidden lg:block lg:ml-6 lg:space-x-4">
-                      <div className="flex">
-                        {navigation.map((item) => (
-                          <a
-                            key={item.name}
-                            href={item.href}
-                            className={classNames(
-                              item.current ? 'bg-black bg-opacity-25' : 'hover:bg-opacity-25 hover:bg-black',
-                              'mr-2 rounded-md py-2 px-3 text-sm font-medium text-white',
-                            )}
-                          >
-                            {item.name}
-                          </a>
-                        ))}
-                      </div>
-                    </div>
                   </div>
-                  <div className="flex lg:hidden">
-                    {/* Mobile menu button */}
-                    <Disclosure.Button className="p-2 rounded-md inline-flex items-center justify-center text-sky-200 hover:text-white hover:bg-sky-800">
-                      <span className="sr-only">Open main menu</span>
-                      {open ? (
-                        <XIcon className="block flex-shrink-0 h-6 w-6" aria-hidden="true" />
-                      ) : (
-                        <MenuIcon className="block flex-shrink-0 h-6 w-6" aria-hidden="true" />
-                      )}
-                    </Disclosure.Button>
-                  </div>
+                  <Link href="https://marketplace.visualstudio.com/items?itemname=mintlify.document">
+                    <button
+                      type="button"
+                      className="inline-flex items-center px-3.5 py-2 border border-transparent text-sm leading-4 font-medium rounded-full shadow-sm text-gray-800 bg-white/[0.9] hover:bg-gray-100 shadow"
+                    >
+                      <Image height={16} width={16} src={vscode} />
+                      <p className="ml-2">Install on Visual Studio Code</p>
+                    </button>
+                  </Link>
                 </div>
               </div>
-
-              <Disclosure.Panel className="bg-sky-900 lg:hidden">
-                <div className="pt-2 pb-3 px-2 space-y-1">
-                  {navigation.map((item) => (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      className={classNames(
-                        item.current ? 'bg-black bg-opacity-25' : 'hover:bg-sky-800',
-                        'block rounded-md py-2 px-3 text-base font-medium text-white',
-                      )}
-                    >
-                      {item.name}
-                    </a>
-                  ))}
-                </div>
-              </Disclosure.Panel>
             </nav>
             <div
               aria-hidden="true"
@@ -170,7 +130,7 @@ export default function Example() {
             </div>
             <header className="relative py-8">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h1 className="text-2xl font-bold text-white">Detect any programming language</h1>
+                <h1 className="text-2xl font-bold text-white">Documentation Generator</h1>
                 <p className="mt-1 text-gray-300">Add some code to get started</p>
               </div>
             </header>
@@ -211,7 +171,13 @@ export default function Example() {
               </Link>
             ))}
           </div>
-          <p className="mt-8 text-center text-base text-gray-400">&copy; Made by Mintlify</p>
+          <p className="mt-8 text-center text-base text-gray-400">
+            &copy;
+            {' '}
+            <Link href="https://mintlify.com">Mintlify</Link>
+            {' '}
+            2022. Send Feedback
+          </p>
         </div>
       </footer>
       <Script src="gradient.js" />
