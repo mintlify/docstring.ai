@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Head from 'next/head';
+import Script from 'next/script';
 import Link from 'next/link';
 import { Disclosure } from '@headlessui/react';
 import {
@@ -80,6 +81,13 @@ export default function Example() {
 
   return (
     <div>
+      <Head>
+        <title>docstring.ai - Detect any programming language</title>
+        <meta
+          name="description"
+          content="Inferlang can detect the programming language of a given source code. Powered by Guesslang and hosted by Mintlify, it supports more than 50 programming with 90+% accuracy"
+        />
+      </Head>
       <Disclosure as="div" className="relative pb-32 overflow-hidden">
         {({ open }: any) => (
           <>
@@ -156,23 +164,8 @@ export default function Example() {
                 'absolute inset-x-0 left-1/2 transform -translate-x-1/2 w-full overflow-hidden lg:inset-y-0',
               )}
             >
-              <div className="absolute inset-0 flex">
-                <div className="h-full w-1/2 bg-primary" />
-                <div className="h-full w-1/2 bg-secondary" />
-              </div>
-              <div className="relative flex justify-center">
-                <svg
-                  className="flex-shrink-0"
-                  width={1750}
-                  height={308}
-                  viewBox="0 0 1750 308"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path d="M284.161 308H1465.84L875.001 182.413 284.161 308z" fill="#18e299" />
-                  <path d="M1465.84 308L16.816 0H1750v308h-284.16z" fill="#18e299" />
-                  <path d="M1733.19 0L284.161 308H0V0h1733.19z" fill="#0c8c5e" />
-                  <path d="M875.001 182.413L1733.19 0H16.816l858.185 182.413z" fill="#0c8c5e" />
-                </svg>
+              <div className="relative h-full">
+                <canvas id="gradient-canvas" />
               </div>
             </div>
             <header className="relative py-8">
@@ -184,15 +177,6 @@ export default function Example() {
           </>
         )}
       </Disclosure>
-
-      <Head>
-        <title>Inferlang - Detect any programming language</title>
-        <meta
-          name="description"
-          content="Inferlang can detect the programming language of a given source code. Powered by Guesslang and hosted by Mintlify, it supports more than 50 programming with 90+% accuracy"
-        />
-      </Head>
-
       <main className="relative -mt-32">
         <div className="max-w-screen-xl mx-auto pb-6 px-4 sm:px-6 lg:pb-16 lg:px-8">
           <div className="rounded-lg overflow-hidden">
@@ -205,7 +189,7 @@ export default function Example() {
                   language={outputDisplay}
                 />
               </div>
-              <div className="h-full mt-4 sm:m-0">
+              <div className="h-full sm:m-0">
                 <Output
                   output={outputDisplay}
                   isLoading={false}
@@ -215,19 +199,8 @@ export default function Example() {
           </div>
         </div>
       </main>
-      <footer className="relative z-10 bg-white">
-        <div className="max-w-7xl mx-auto py-12 px-4 overflow-hidden sm:px-6 lg:px-8">
-          <nav className="-mx-5 -my-2 flex flex-wrap justify-center" aria-label="Footer">
-            {footer.main.map((item) => (
-              <div key={item.name} className="px-5 py-2">
-                <Link key={item.name} href={item.href} passHref>
-                  <button type="button" className="text-base text-gray-500 hover:text-gray-900">
-                    {item.name}
-                  </button>
-                </Link>
-              </div>
-            ))}
-          </nav>
+      <footer className="fixed pb-8 z-10 bottom-0 w-full">
+        <div className="max-w-7xl mx-auto px-4 overflow-hidden sm:px-6 lg:px-8">
           <div className="mt-8 flex justify-center space-x-6">
             {footer.social.map((item) => (
               <Link key={item.name} href={item.href} passHref>
@@ -241,6 +214,7 @@ export default function Example() {
           <p className="mt-8 text-center text-base text-gray-400">&copy; 2021 Mintlify, Inc. Powered by GuessLang.</p>
         </div>
       </footer>
+      <Script src="gradient.js" />
     </div>
   );
 }

@@ -1,3 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+#gradient-canvas {
+  width:100%;
+  height:100%;
+  --gradient-color-1: #18E299;
+  --gradient-color-2: #0D935B;
+  --gradient-color-3: #1B4637;
+  --gradient-color-4: #0D935B;
+  z-index:0;
+}
