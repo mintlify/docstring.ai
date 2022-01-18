@@ -8,6 +8,35 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
+textarea {
+  --tw-ring-color: transparent !important;
+  outline: none !important;
+  white-space: pre-line;
+}
+
+.editor {
+  counter-reset: line;
+}
+
+.editor #codeArea {
+  outline: none;
+  padding-left: 40px !important;
+}
+
+.editor pre {
+  padding-left: 40px !important;
+}
+
+.editor .editorLineNumber {
+  position: absolute;
+  left: 0px;
+  color: #cccccc;
+  text-align: right;
+  width: 30px;
+  font-weight: 100;
+}
+
+
 .gradient {
   background: linear-gradient(270deg, #0d935b, #28946e);
   background-size: 400% 400%;

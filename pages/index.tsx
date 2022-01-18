@@ -66,12 +66,8 @@ export default function Example() {
   const codeOnChange = async (newCode: string) => {
     setCode(newCode);
 
-    if (newCode.length < 40) {
-      setOutputDisplay(`You need to add another ${40 - newCode.length} characters to detect`);
-    } else {
-      const detectedLanguage = '';
-      setOutputDisplay(detectedLanguage);
-    }
+    const detectedLanguage = '';
+    setOutputDisplay(detectedLanguage);
   };
 
   return (
@@ -128,7 +124,7 @@ export default function Example() {
             </div>
             <header className="relative py-6">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h1 className="text-2xl font-bold text-white">Documentation Generator</h1>
+                <h1 className="text-2xl font-bold text-white">Documentation Writer</h1>
                 <p className="mt-1 text-gray-300">Add some code to get started</p>
               </div>
             </header>
@@ -164,7 +160,7 @@ export default function Example() {
                     <Menu as="div" className="relative inline-block text-left">
                       <div>
                         <Menu.Button className="inline-flex justify-center w-full rounded-md border border-gray-200 shadow-sm px-2 py-1 bg-white text-sm text-gray-700 hover:bg-gray-50 hover:border-gray-300">
-                          Auto-detect
+                          JavaScript (auto)
                           <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
                         </Menu.Button>
                       </div>
@@ -202,7 +198,7 @@ export default function Example() {
                     <Menu as="div" className="relative inline-block text-left">
                       <div>
                         <Menu.Button className="inline-flex justify-center w-full rounded-md border border-gray-200 shadow-sm px-2 py-1 bg-white text-sm text-gray-700 hover:bg-gray-50 hover:border-gray-300">
-                          Auto-detect
+                          JSDoc (auto)
                           <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
                         </Menu.Button>
                       </div>
@@ -240,7 +236,7 @@ export default function Example() {
                     className="inline-flex space-x-1 items-center px-4 py-2 text-sm rounded-md text-green-600 bg-green-500 bg-opacity-25 hover:bg-opacity-40 duration-200"
                   >
                     <div>
-                      Generate
+                      Write Docs
                     </div>
                     <div>
                       <PencilAltIcon className="h-4 w-4" />
