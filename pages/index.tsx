@@ -211,7 +211,7 @@ export default function Example() {
               </Link>
             ))}
           </div>
-          <p className="mt-8 text-center text-base text-gray-400">&copy; 2021 Mintlify, Inc. Powered by GuessLang.</p>
+          <p className="mt-8 text-center text-base text-gray-400">&copy; Made by Mintlify</p>
         </div>
       </footer>
       <Script src="gradient.js" />
