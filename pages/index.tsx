@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useState, Fragment } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
-import Script from 'next/script';
 import Link from 'next/link';
-import { Disclosure } from '@headlessui/react';
+import { Menu, Transition, Disclosure } from '@headlessui/react';
+import { ChevronDownIcon } from '@heroicons/react/solid';
 import {
-  MailIcon,
+  MailIcon, PencilAltIcon,
 } from '@heroicons/react/outline';
 import CodeEditor from '../components/CodeEditor';
 import Output from '../components/Output';
@@ -124,11 +124,9 @@ export default function Example() {
                 'absolute inset-x-0 left-1/2 transform -translate-x-1/2 w-full overflow-hidden lg:inset-y-0',
               )}
             >
-              <div className="relative h-full">
-                <canvas id="gradient-canvas" />
-              </div>
+              <div className="relative h-full gradient" />
             </div>
-            <header className="relative py-8">
+            <header className="relative py-6">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h1 className="text-2xl font-bold text-white">Documentation Generator</h1>
                 <p className="mt-1 text-gray-300">Add some code to get started</p>
@@ -149,7 +147,7 @@ export default function Example() {
                   language={outputDisplay}
                 />
               </div>
-              <div className="h-full sm:m-0">
+              <div className="h-full mt-4 sm:m-0">
                 <Output
                   output={outputDisplay}
                   isLoading={false}
@@ -157,9 +155,104 @@ export default function Example() {
               </div>
             </div>
           </div>
+          <div className="mt-16 w-full">
+            <div className="grid gap-8 items-start justify-center">
+              <span className="relative px-7 py-4 rounded-lg leading-none flex items-center border border-gray-100 shadow-sm">
+                <span className="flex space-x-5">
+                  <div>
+                    <p className="text-sm text-gray-600 mb-1 font-medium">Language</p>
+                    <Menu as="div" className="relative inline-block text-left">
+                      <div>
+                        <Menu.Button className="inline-flex justify-center w-full rounded-md border border-gray-200 shadow-sm px-2 py-1 bg-white text-sm text-gray-700 hover:bg-gray-50 hover:border-gray-300">
+                          Auto-detect
+                          <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
+                        </Menu.Button>
+                      </div>
+
+                      <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-100"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
+                      >
+                        <Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                          <div className="py-1">
+                            <Menu.Item>
+                              {({ active }) => (
+                                <span
+                                  className={classNames(
+                                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                    'block px-4 py-2 text-sm',
+                                  )}
+                                >
+                                  Account settings
+                                </span>
+                              )}
+                            </Menu.Item>
+                          </div>
+                        </Menu.Items>
+                      </Transition>
+                    </Menu>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600 mb-1 font-medium">Format</p>
+                    <Menu as="div" className="relative inline-block text-left">
+                      <div>
+                        <Menu.Button className="inline-flex justify-center w-full rounded-md border border-gray-200 shadow-sm px-2 py-1 bg-white text-sm text-gray-700 hover:bg-gray-50 hover:border-gray-300">
+                          Auto-detect
+                          <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
+                        </Menu.Button>
+                      </div>
+
+                      <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-100"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
+                      >
+                        <Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                          <div className="py-1">
+                            <Menu.Item>
+                              {({ active }) => (
+                                <span
+                                  className={classNames(
+                                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                    'block px-4 py-2 text-sm',
+                                  )}
+                                >
+                                  Account settings
+                                </span>
+                              )}
+                            </Menu.Item>
+                          </div>
+                        </Menu.Items>
+                      </Transition>
+                    </Menu>
+                  </div>
+                  <button
+                    type="button"
+                    className="inline-flex space-x-1 items-center px-4 py-2 text-sm rounded-md text-green-600 bg-green-500 bg-opacity-25 hover:bg-opacity-40 duration-200"
+                  >
+                    <div>
+                      Generate
+                    </div>
+                    <div>
+                      <PencilAltIcon className="h-4 w-4" />
+                    </div>
+                  </button>
+                </span>
+              </span>
+            </div>
+          </div>
         </div>
       </main>
-      <footer className="fixed pb-8 z-10 bottom-0 w-full">
+      <footer className="relative pb-8 z-10 bottom-0 w-full">
         <div className="max-w-7xl mx-auto px-4 overflow-hidden sm:px-6 lg:px-8">
           <div className="mt-8 flex justify-center space-x-6">
             {footer.social.map((item) => (
@@ -180,7 +273,6 @@ export default function Example() {
           </p>
         </div>
       </footer>
-      <Script src="gradient.js" />
     </div>
   );
 }
