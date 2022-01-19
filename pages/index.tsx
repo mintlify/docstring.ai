@@ -16,6 +16,7 @@ import CodeEditor from '../components/CodeEditor';
 import Output from '../components/Output';
 import vscode from '../assets/vsc.svg';
 import logo from '../assets/mintlify.svg';
+import EXAMPLES from '../content/examples';
 
 const ENDPOINT = process.env.NODE_ENV === 'development'
   ? 'http://localhost:5000'
@@ -124,6 +125,21 @@ export default function Example() {
     });
   };
 
+  const onGenerateExample = () => {
+    const randomExample = EXAMPLES[Math.floor(Math.random() * EXAMPLES.length)];
+    const foundLanguage = languagesDropdown.find(
+      (languageOption) => languageOption.id === randomExample.languageId,
+    );
+    const foundFormat = formats.find(
+      (format) => format.id === randomExample.format,
+    );
+    if (foundLanguage == null || foundFormat == null) return;
+
+    setSelectedLanguage(foundLanguage);
+    setSelectedFormat(foundFormat);
+    setCode(randomExample.code);
+  };
+
   const onClickGenerate = async () => {
     setIsGenerating(true);
     setOutputDisplay('');
@@ -211,7 +227,7 @@ export default function Example() {
       <main className="relative -mt-32 z-10">
         <div className="max-w-screen-xl mx-auto pb-6 px-4 sm:px-6 lg:pb-8 lg:px-8">
           <div className="rounded-lg">
-            <div className="grid sm:grid-cols-2 sm:gap-4">
+            <div className="grid sm:grid-cols-2 sm:gap-x-4 sm:gap-y-1">
               <div className="h-full">
                 <CodeEditor
                   code={code}
@@ -219,6 +235,15 @@ export default function Example() {
                   placeholder="Type or paste code here"
                   languageGrammar={selectedLanguage.grammar}
                 />
+                <div className="w-full text-right px-1">
+                  <button
+                    className="mt-1 text-primary text-sm hover:opacity-80 duration-100"
+                    type="button"
+                    onClick={onGenerateExample}
+                  >
+                    Get example
+                  </button>
+                </div>
               </div>
               <div className="h-full mt-4 sm:m-0">
                 <Output
