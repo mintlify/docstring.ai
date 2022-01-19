@@ -140,7 +140,7 @@ export default function Example() {
       setOutputDisplay(docstring);
     } catch (error: any) {
       const errorMessage = error.response?.data.error || 'An enexpected error occurred';
-      alert(errorMessage);
+      console.log({ errorMessage });
     } finally {
       setIsGenerating(false);
     }
@@ -149,11 +149,15 @@ export default function Example() {
   return (
     <div>
       <Head>
-        <title>docstring.ai - Detect any programming language</title>
+        <title>DocstringAI - Automated Documentation Writer</title>
         <meta
           name="description"
-          content="Inferlang can detect the programming language of a given source code. Powered by Guesslang and hosted by Mintlify, it supports more than 50 programming with 90+% accuracy"
+          content="Hate writing documentation? Let docstring.ai write it for you ✍️"
         />
+        <meta property="og:title" content="DocstringAI - Automated Documentation Write" />
+        <meta property="og:image" content="https://res.cloudinary.com/mintlify/image/upload/v1642572331/thumbnail_glhmjx.jpg" />
+        <meta property="og:description" content="Hate writing documentation? Let docstring.ai write it for you ✍️" />
+        <meta property="og:url" content="https://www.docstring.ai" />
       </Head>
       <Disclosure as="div" className="relative pb-32 overflow-hidden">
         {({ open }: any) => (
@@ -516,7 +520,7 @@ export default function Example() {
           </div>
         </div>
       </main>
-      <footer className="relative pb-8 bottom-0 w-full">
+      <footer className="relative mt-8 sm:mt-16 pb-8 bottom-0 w-full">
         <div className="max-w-7xl mx-auto px-4 overflow-hidden sm:px-6 lg:px-8">
           <div className="mt-8 flex justify-center space-x-6">
             {footer.social.map((item) => (
@@ -533,7 +537,9 @@ export default function Example() {
             {' '}
             <Link href="https://mintlify.com">Mintlify</Link>
             {' '}
-            2022. Send Feedback
+            2022.
+            {' '}
+            <Link href="mailto:hi@mintlify.com">Send Feedback</Link>
           </p>
         </div>
       </footer>
