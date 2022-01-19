@@ -164,7 +164,7 @@ export default function Example() {
       setOutputDisplay(docstring);
     } catch (error: any) {
       const errorMessage = error?.response?.data?.error || 'An enexpected error occurred';
-      toast(errorMessage);
+      toast.error(errorMessage);
     } finally {
       setIsGenerating(false);
     }

@@ -1,7 +1,7 @@
-import toast from 'react-hot-toast';
 import { highlight, Grammar } from 'prismjs';
 import Editor from 'react-simple-code-editor';
 import { DuplicateIcon } from '@heroicons/react/outline';
+import { toast } from 'react-toastify';
 
 type OutputProps = {
   output: string;
