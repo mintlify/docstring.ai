@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Script from 'next/script';
 import Link from 'next/link';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
 import {
   Menu, Transition, Disclosure, Switch,
 } from '@headlessui/react';
@@ -17,6 +18,7 @@ import Output from '../components/Output';
 import vscode from '../assets/vsc.svg';
 import logo from '../assets/mintlify.svg';
 import EXAMPLES from '../content/examples';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ENDPOINT = process.env.NODE_ENV === 'development'
   ? 'http://localhost:5000'
@@ -161,8 +163,8 @@ export default function Example() {
 
       setOutputDisplay(docstring);
     } catch (error: any) {
-      const errorMessage = error.response?.data.error || 'An enexpected error occurred';
-      console.log({ errorMessage });
+      const errorMessage = error?.response?.data?.error || 'An enexpected error occurred';
+      toast(errorMessage);
     } finally {
       setIsGenerating(false);
     }
@@ -574,6 +576,7 @@ export default function Example() {
           </p>
         </div>
       </footer>
+      <ToastContainer position="bottom-right" />
       <Script>
         {`// Initialize the agent at application startup.
         fpPromise = new Promise((resolve, reject) => {

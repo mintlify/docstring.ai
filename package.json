@@ -18,7 +18,8 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-hot-toast": "^2.1.1",
-    "react-simple-code-editor": "^0.11.0"
+    "react-simple-code-editor": "^0.11.0",
+    "react-toastify": "^8.1.0"
   },
   "devDependencies": {
     "@types/prismjs": "^1.16.6",
