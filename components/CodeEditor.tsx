@@ -3,6 +3,14 @@ import Editor from 'react-simple-code-editor';
 import { highlight, Grammar } from 'prismjs';
 import 'prismjs/themes/prism-dark.css';
 import 'prismjs/components/prism-typescript';
+import 'prismjs/components/prism-jsx';
+import 'prismjs/components/prism-tsx';
+import 'prismjs/components/prism-markdown';
+import 'prismjs/components/prism-python';
+import 'prismjs/components/prism-java';
+import 'prismjs/components/prism-c';
+import 'prismjs/components/prism-scss';
+import 'prismjs/components/prism-rust';
 
 type CodeEditorProps = {
   code: string;

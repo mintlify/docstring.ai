@@ -222,6 +222,7 @@ export default function Example() {
                 <Output
                   output={outputDisplay}
                   isLoading={isGenerating}
+                  languageGrammar={selectedLanguage.grammar}
                 />
               </div>
             </div>

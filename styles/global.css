@@ -36,6 +36,10 @@ textarea {
   font-weight: 100;
 }
 
+.output .token {
+  color: #0D935B !important;
+}
+
 
 .gradient {
   background: linear-gradient(270deg, #0d935b, #28946e);
