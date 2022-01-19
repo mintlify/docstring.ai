@@ -247,84 +247,76 @@ export default function Example() {
                     Get example
                   </button>
                 </div>
-              </div>
-              <div className="h-full mt-4 sm:m-0">
-                <Output
-                  output={outputDisplay}
-                  isLoading={isGenerating}
-                  languageGrammar={selectedLanguage.grammar}
-                />
-              </div>
-              <div className="hidden xl:block mt-2 w-full z-10">
-                <div className="grid gap-8 items-start justify-center">
-                  <span className="relative px-4 py-4 rounded-lg leading-none flex items-center border border-gray-100 shadow-sm">
-                    <span className="flex space-x-5">
-                      <div>
-                        <p className="text-sm text-gray-600 mb-1 font-medium">Language</p>
-                        <Menu as="div" className="relative inline-block text-left">
-                          <div>
-                            <Menu.Button className="inline-flex items-stretch w-40 rounded-md border border-gray-200 shadow-sm px-2 py-1 bg-white text-sm text-gray-700 hover:bg-gray-50 hover:border-gray-300">
-                              <div className="flex-1 text-left text-gray-700">
-                                {selectedLanguage.name}
-                              </div>
-                              <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
-                            </Menu.Button>
-                          </div>
+                <div className="hidden xl:block mt-2 w-full z-10">
+                  <div className="grid gap-8 items-start justify-center">
+                    <span className="relative px-4 py-4 rounded-lg leading-none flex items-center border border-gray-100 shadow-sm">
+                      <span className="flex space-x-5">
+                        <div>
+                          <p className="text-sm text-gray-600 mb-1 font-medium">Language</p>
+                          <Menu as="div" className="relative inline-block text-left">
+                            <div>
+                              <Menu.Button className="inline-flex items-stretch w-40 rounded-md border border-gray-200 shadow-sm px-2 py-1 bg-white text-sm text-gray-700 hover:bg-gray-50 hover:border-gray-300">
+                                <div className="flex-1 text-left text-gray-700">
+                                  {selectedLanguage.name}
+                                </div>
+                                <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
+                              </Menu.Button>
+                            </div>
 
-                          <Transition
-                            as={Fragment}
-                            enter="transition ease-out duration-100"
-                            enterFrom="transform opacity-0 scale-95"
-                            enterTo="transform opacity-100 scale-100"
-                            leave="transition ease-in duration-75"
-                            leaveFrom="transform opacity-100 scale-100"
-                            leaveTo="transform opacity-0 scale-95"
-                          >
-                            <Menu.Items className="origin-top-right w-40 absolute right-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-                              <div className="py-1">
-                                {languagesDropdown.map((language) => (
-                                  <Menu.Item key={language.id}>
-                                    <button
-                                      type="button"
-                                      onClick={() => setSelectedLanguage(language)}
-                                      className={classNames(
-                                        selectedLanguage.id === language.id ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                        'block px-4 py-2 text-sm w-full text-left hover:bg-gray-100',
-                                      )}
-                                    >
-                                      {language.name}
-                                    </button>
-                                  </Menu.Item>
-                                ))}
-                              </div>
-                            </Menu.Items>
-                          </Transition>
-                        </Menu>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-600 mb-1 font-medium">Format</p>
-                        <Menu as="div" className="relative inline-block text-left">
-                          <div>
-                            <Menu.Button className="inline-flex justify-center w-32 rounded-md border border-gray-200 shadow-sm px-2 py-1 bg-white text-sm hover:bg-gray-50 hover:border-gray-300">
-                              <div className="flex-1 text-left text-gray-700">
-                                {selectedFormat.name}
-                              </div>
-                              <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
-                            </Menu.Button>
-                          </div>
+                            <Transition
+                              as={Fragment}
+                              enter="transition ease-out duration-100"
+                              enterFrom="transform opacity-0 scale-95"
+                              enterTo="transform opacity-100 scale-100"
+                              leave="transition ease-in duration-75"
+                              leaveFrom="transform opacity-100 scale-100"
+                              leaveTo="transform opacity-0 scale-95"
+                            >
+                              <Menu.Items className="origin-top-right w-40 absolute right-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                                <div className="py-1">
+                                  {languagesDropdown.map((language) => (
+                                    <Menu.Item key={language.id}>
+                                      <button
+                                        type="button"
+                                        onClick={() => setSelectedLanguage(language)}
+                                        className={classNames(
+                                          selectedLanguage.id === language.id ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                          'block px-4 py-2 text-sm w-full text-left hover:bg-gray-100',
+                                        )}
+                                      >
+                                        {language.name}
+                                      </button>
+                                    </Menu.Item>
+                                  ))}
+                                </div>
+                              </Menu.Items>
+                            </Transition>
+                          </Menu>
+                        </div>
+                        <div>
+                          <p className="text-sm text-gray-600 mb-1 font-medium">Format</p>
+                          <Menu as="div" className="relative inline-block text-left">
+                            <div>
+                              <Menu.Button className="inline-flex justify-center w-32 rounded-md border border-gray-200 shadow-sm px-2 py-1 bg-white text-sm hover:bg-gray-50 hover:border-gray-300">
+                                <div className="flex-1 text-left text-gray-700">
+                                  {selectedFormat.name}
+                                </div>
+                                <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
+                              </Menu.Button>
+                            </div>
 
-                          <Transition
-                            as={Fragment}
-                            enter="transition ease-out duration-100"
-                            enterFrom="transform opacity-0 scale-95"
-                            enterTo="transform opacity-100 scale-100"
-                            leave="transition ease-in duration-75"
-                            leaveFrom="transform opacity-100 scale-100"
-                            leaveTo="transform opacity-0 scale-95"
-                          >
-                            <Menu.Items className="origin-top-right w-32 absolute right-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                              <div className="py-1">
-                                {
+                            <Transition
+                              as={Fragment}
+                              enter="transition ease-out duration-100"
+                              enterFrom="transform opacity-0 scale-95"
+                              enterTo="transform opacity-100 scale-100"
+                              leave="transition ease-in duration-75"
+                              leaveFrom="transform opacity-100 scale-100"
+                              leaveTo="transform opacity-0 scale-95"
+                            >
+                              <Menu.Items className="origin-top-right w-32 absolute right-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                <div className="py-1">
+                                  {
                               formats.map((format) => (
                                 <Menu.Item key={format.id}>
                                   <button
@@ -340,44 +332,44 @@ export default function Example() {
                                 </Menu.Item>
                               ))
                             }
-                              </div>
-                            </Menu.Items>
-                          </Transition>
-                        </Menu>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-600 mb-1 font-medium">Commented</p>
-                        <div className="mt-2 flex">
-                          <Switch
-                            checked={commentsEnabled}
-                            onChange={setCommentsEnabled}
-                            className="flex-shrink-0 group relative rounded-full inline-flex items-center justify-center h-5 w-10 cursor-pointer"
-                          >
-                            <span className="sr-only">Use setting</span>
-                            <span aria-hidden="true" className="pointer-events-none absolute bg-white w-full h-full rounded-md" />
-                            <span
-                              aria-hidden="true"
-                              className={classNames(
-                                commentsEnabled ? 'bg-primary' : 'bg-gray-200',
-                                'pointer-events-none absolute h-4 w-9 mx-auto rounded-full transition-colors ease-in-out duration-200',
-                              )}
-                            />
-                            <span
-                              aria-hidden="true"
-                              className={classNames(
-                                commentsEnabled ? 'translate-x-5' : 'translate-x-0',
-                                'pointer-events-none absolute left-0 inline-block h-5 w-5 border border-gray-200 rounded-full bg-white shadow transform ring-0 transition-transform ease-in-out duration-200',
-                              )}
-                            />
-                          </Switch>
+                                </div>
+                              </Menu.Items>
+                            </Transition>
+                          </Menu>
                         </div>
-                      </div>
-                      <button
-                        type="button"
-                        className="relative flex w-32 space-x-1 justify-center items-center px-4 py-2 text-sm rounded-md text-green-600 bg-green-500 bg-opacity-25 hover:bg-opacity-40 duration-200"
-                        onClick={onClickGenerate}
-                      >
-                        {
+                        <div>
+                          <p className="text-sm text-gray-600 mb-1 font-medium">Commented</p>
+                          <div className="mt-2 flex">
+                            <Switch
+                              checked={commentsEnabled}
+                              onChange={setCommentsEnabled}
+                              className="flex-shrink-0 group relative rounded-full inline-flex items-center justify-center h-5 w-10 cursor-pointer"
+                            >
+                              <span className="sr-only">Use setting</span>
+                              <span aria-hidden="true" className="pointer-events-none absolute bg-white w-full h-full rounded-md" />
+                              <span
+                                aria-hidden="true"
+                                className={classNames(
+                                  commentsEnabled ? 'bg-primary' : 'bg-gray-200',
+                                  'pointer-events-none absolute h-4 w-9 mx-auto rounded-full transition-colors ease-in-out duration-200',
+                                )}
+                              />
+                              <span
+                                aria-hidden="true"
+                                className={classNames(
+                                  commentsEnabled ? 'translate-x-5' : 'translate-x-0',
+                                  'pointer-events-none absolute left-0 inline-block h-5 w-5 border border-gray-200 rounded-full bg-white shadow transform ring-0 transition-transform ease-in-out duration-200',
+                                )}
+                              />
+                            </Switch>
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          className="relative flex w-32 space-x-1 justify-center items-center px-4 py-2 text-sm rounded-md text-green-600 bg-green-500 bg-opacity-25 hover:bg-opacity-40 duration-200"
+                          onClick={onClickGenerate}
+                        >
+                          {
                       isGenerating ? (
                         <div className="absolute inset-0 flex items-center justify-center">
                           <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -396,10 +388,18 @@ export default function Example() {
                         </>
                       )
                     }
-                      </button>
+                        </button>
+                      </span>
                     </span>
-                  </span>
+                  </div>
                 </div>
+              </div>
+              <div className="h-full mt-4 sm:m-0">
+                <Output
+                  output={outputDisplay}
+                  isLoading={isGenerating}
+                  languageGrammar={selectedLanguage.grammar}
+                />
               </div>
             </div>
           </div>
