@@ -14,6 +14,7 @@ import { languages, Grammar } from 'prismjs';
 import CodeEditor from '../components/CodeEditor';
 import Output from '../components/Output';
 import vscode from '../assets/vsc.svg';
+import logo from '../assets/mintlify.svg';
 
 const ENDPOINT = process.env.NODE_ENV === 'development'
   ? 'http://localhost:5000'
@@ -166,14 +167,8 @@ export default function Example() {
               <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
                 <div className="relative h-16 flex items-center justify-between">
                   <div className="px-2 flex items-center lg:px-0">
-                    <div className="flex-shrink-0">
-                      <div className="h-7 w-7">
-                        <svg viewBox="0 0 141 141" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M18.4672 54.6072L34.4379 38.5328C33.5494 42.6428 32.858 46.9378 32.858 51.3214C32.858 57.7465 33.8393 64.3183 36.3867 70.4808C37.7727 74.4164 39.6401 78.3944 42.1274 82.1519L10.8786 113.401C9.19813 110.656 7.8153 107.841 6.82735 104.877L6.81229 104.832L6.79617 104.787C4.87361 99.4465 4.00367 93.8575 4.00001 88.2151C4.21919 76.4045 8.54284 64.6897 17.2843 55.788H17.2941L18.4672 54.6072Z" stroke="white" strokeWidth="8" />
-                          <path d="M26.9728 129.593L58.1003 98.2659C61.7071 100.625 65.5846 102.667 69.8386 104.09C76.1369 106.351 82.6506 107.343 89.1113 107.343C93.4212 107.343 97.7931 106.884 102.2 105.721L86.0496 121.976L86.0404 121.985L85.583 122.443C76.3521 131.674 64.3186 136.21 52.2175 136.434C46.5752 136.43 40.9862 135.56 35.6458 133.638L35.6291 133.632L35.6123 133.626C32.6572 132.592 29.7356 131.267 26.9728 129.593Z" stroke="white" strokeWidth="8" />
-                          <path d="M84.9806 44.1555L84.9517 44.1339L84.9225 44.1128C80.5289 40.9396 75.7466 38.1463 70.3607 36.3443C64.0624 34.0833 57.5487 33.0913 51.088 33.0913C48.8828 33.0913 46.6614 33.2115 44.4274 33.4846C46.6642 28.0962 50.0095 22.9946 54.4083 18.4328L54.8495 17.9915C64.1038 8.73728 76.3716 4 88.6458 4L110.107 4L136.434 4V30.3262V51.7878C136.434 64.0305 131.717 76.0876 122.42 85.6063C122.366 85.6611 122.315 85.7153 122.267 85.7685L122.026 86.0014C117.432 90.4366 112.29 93.8028 106.858 96.0437C107.158 93.8433 107.342 91.6063 107.342 89.3456C107.342 82.8754 106.347 76.3522 104.079 70.0453C102.335 65.0655 99.8209 60.0145 96.2571 55.4251C94.7351 53.3988 92.9816 51.3998 91.0077 49.4259C89.0247 47.4429 87.0164 45.6824 84.9806 44.1555Z" stroke="white" strokeWidth="8" />
-                        </svg>
-                      </div>
+                    <div className="mt-1 flex-shrink-0">
+                      <Image height={48} width={48} src={logo} />
                     </div>
                   </div>
                   <Link href="https://marketplace.visualstudio.com/items?itemname=mintlify.document">
@@ -207,8 +202,8 @@ export default function Example() {
         )}
       </Disclosure>
       <main className="relative -mt-32 z-10">
-        <div className="max-w-screen-xl mx-auto pb-6 px-4 sm:px-6 lg:pb-16 lg:px-8">
-          <div className="rounded-lg overflow-hidden">
+        <div className="max-w-screen-xl mx-auto pb-6 px-4 sm:px-6 lg:pb-8 lg:px-8">
+          <div className="rounded-lg">
             <div className="grid sm:grid-cols-2 sm:gap-4">
               <div className="h-full">
                 <CodeEditor
@@ -225,12 +220,158 @@ export default function Example() {
                   languageGrammar={selectedLanguage.grammar}
                 />
               </div>
+              <div className="hidden xl:block mt-2 w-full z-10">
+                <div className="grid gap-8 items-start justify-center">
+                  <span className="relative px-4 py-4 rounded-lg leading-none flex items-center border border-gray-100 shadow-sm">
+                    <span className="flex space-x-5">
+                      <div>
+                        <p className="text-sm text-gray-600 mb-1 font-medium">Language</p>
+                        <Menu as="div" className="relative inline-block text-left">
+                          <div>
+                            <Menu.Button className="inline-flex items-stretch w-40 rounded-md border border-gray-200 shadow-sm px-2 py-1 bg-white text-sm text-gray-700 hover:bg-gray-50 hover:border-gray-300">
+                              <div className="flex-1 text-left text-gray-700">
+                                {selectedLanguage.name}
+                              </div>
+                              <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
+                            </Menu.Button>
+                          </div>
+
+                          <Transition
+                            as={Fragment}
+                            enter="transition ease-out duration-100"
+                            enterFrom="transform opacity-0 scale-95"
+                            enterTo="transform opacity-100 scale-100"
+                            leave="transition ease-in duration-75"
+                            leaveFrom="transform opacity-100 scale-100"
+                            leaveTo="transform opacity-0 scale-95"
+                          >
+                            <Menu.Items className="origin-top-right w-40 absolute right-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                              <div className="py-1">
+                                {languagesDropdown.map((language) => (
+                                  <Menu.Item key={language.id}>
+                                    <button
+                                      type="button"
+                                      onClick={() => setSelectedLanguage(language)}
+                                      className={classNames(
+                                        selectedLanguage.id === language.id ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                        'block px-4 py-2 text-sm w-full text-left hover:bg-gray-100',
+                                      )}
+                                    >
+                                      {language.name}
+                                    </button>
+                                  </Menu.Item>
+                                ))}
+                              </div>
+                            </Menu.Items>
+                          </Transition>
+                        </Menu>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600 mb-1 font-medium">Format</p>
+                        <Menu as="div" className="relative inline-block text-left">
+                          <div>
+                            <Menu.Button className="inline-flex justify-center w-32 rounded-md border border-gray-200 shadow-sm px-2 py-1 bg-white text-sm hover:bg-gray-50 hover:border-gray-300">
+                              <div className="flex-1 text-left text-gray-700">
+                                {selectedFormat.name}
+                              </div>
+                              <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
+                            </Menu.Button>
+                          </div>
+
+                          <Transition
+                            as={Fragment}
+                            enter="transition ease-out duration-100"
+                            enterFrom="transform opacity-0 scale-95"
+                            enterTo="transform opacity-100 scale-100"
+                            leave="transition ease-in duration-75"
+                            leaveFrom="transform opacity-100 scale-100"
+                            leaveTo="transform opacity-0 scale-95"
+                          >
+                            <Menu.Items className="origin-top-right w-32 absolute right-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                              <div className="py-1">
+                                {
+                              formats.map((format) => (
+                                <Menu.Item key={format.id}>
+                                  <button
+                                    type="button"
+                                    onClick={() => setSelectedFormat(format)}
+                                    className={classNames(
+                                      format.id === selectedFormat.id ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                      'block px-4 py-2 text-sm w-full text-left',
+                                    )}
+                                  >
+                                    {format.name}
+                                  </button>
+                                </Menu.Item>
+                              ))
+                            }
+                              </div>
+                            </Menu.Items>
+                          </Transition>
+                        </Menu>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-600 mb-1 font-medium">Commented</p>
+                        <div className="mt-2 flex">
+                          <Switch
+                            checked={commentsEnabled}
+                            onChange={setCommentsEnabled}
+                            className="flex-shrink-0 group relative rounded-full inline-flex items-center justify-center h-5 w-10 cursor-pointer"
+                          >
+                            <span className="sr-only">Use setting</span>
+                            <span aria-hidden="true" className="pointer-events-none absolute bg-white w-full h-full rounded-md" />
+                            <span
+                              aria-hidden="true"
+                              className={classNames(
+                                commentsEnabled ? 'bg-primary' : 'bg-gray-200',
+                                'pointer-events-none absolute h-4 w-9 mx-auto rounded-full transition-colors ease-in-out duration-200',
+                              )}
+                            />
+                            <span
+                              aria-hidden="true"
+                              className={classNames(
+                                commentsEnabled ? 'translate-x-5' : 'translate-x-0',
+                                'pointer-events-none absolute left-0 inline-block h-5 w-5 border border-gray-200 rounded-full bg-white shadow transform ring-0 transition-transform ease-in-out duration-200',
+                              )}
+                            />
+                          </Switch>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        className="relative flex w-32 space-x-1 justify-center items-center px-4 py-2 text-sm rounded-md text-green-600 bg-green-500 bg-opacity-25 hover:bg-opacity-40 duration-200"
+                        onClick={onClickGenerate}
+                      >
+                        {
+                      isGenerating ? (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                          </svg>
+                        </div>
+                      ) : (
+                        <>
+                          <div>
+                            Write Docs
+                          </div>
+                          <div>
+                            <PencilAltIcon className="h-4 w-4" />
+                          </div>
+                        </>
+                      )
+                    }
+                      </button>
+                    </span>
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
-          <div className="mt-16 w-full">
+          <div className="block xl:hidden mt-8 w-full z-10">
             <div className="grid gap-8 items-start justify-center">
-              <span className="relative px-7 py-4 rounded-lg leading-none flex items-center border border-gray-100 shadow-sm">
-                <span className="flex space-x-5">
+              <span className="relative px-4 py-4 rounded-lg leading-none flex items-center border border-gray-100 shadow-sm">
+                <span className="grid grid-cols-2 gap-5 sm:flex sm:space-x-5">
                   <div>
                     <p className="text-sm text-gray-600 mb-1 font-medium">Language</p>
                     <Menu as="div" className="relative inline-block text-left">
