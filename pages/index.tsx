@@ -1,6 +1,7 @@
 import { useState, Fragment } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
+import Script from 'next/script';
 import Link from 'next/link';
 import axios from 'axios';
 import {
@@ -128,11 +129,12 @@ export default function Example() {
     setOutputDisplay('');
 
     try {
+      const fingerprintID = window.localStorage.getItem('id');
       const { data: { docstring } }: { data: { docstring: string } } = await axios.post(`${ENDPOINT}/web/write`, {
         code,
         languageId: selectedLanguage.id,
         commented: commentsEnabled,
-        userId: 'web',
+        userId: fingerprintID || 'web',
         docStyle: 'Auto-generate',
         context: code,
       });
@@ -543,6 +545,26 @@ export default function Example() {
           </p>
         </div>
       </footer>
+      <Script>
+        {`// Initialize the agent at application startup.
+        fpPromise = new Promise((resolve, reject) => {
+          const script = document.createElement('script');
+          script.onload = resolve;
+          script.onerror = reject;
+          script.async = true;
+          script.src = 'https://cdn.jsdelivr.net/npm/'
+            + '@fingerprintjs/fingerprintjs-pro@3/dist/fp.min.js';
+          document.head.appendChild(script);
+        })
+          .then(() => FingerprintJS.load({
+            token: 'ztukxULTMxKRDyYP0GDc'
+          }));
+
+        // Get the visitor identifier when you need it.
+        fpPromise
+          .then(fp => fp.get())
+          .then(result => window.localStorage.setItem('id', result.visitorId));`}
+      </Script>
     </div>
   );
 }
