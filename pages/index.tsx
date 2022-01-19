@@ -576,7 +576,7 @@ export default function Example() {
           </p>
         </div>
       </footer>
-      <ToastContainer position="bottom-right" />
+      <ToastContainer position="bottom-right" limit={1} autoClose={3000} />
       <Script>
         {`// Initialize the agent at application startup.
         fpPromise = new Promise((resolve, reject) => {
