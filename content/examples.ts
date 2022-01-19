@@ -1,5 +1,6 @@
 export default [
   {
+    id: 'encrypt',
     languageId: 'python',
     format: 'reST',
     code: `def encrypt_char(c):
@@ -13,6 +14,7 @@ export default [
   return ltrs[new_index]`,
   },
   {
+    id: 'maximum',
     languageId: 'python',
     format: 'reST',
     code: `def maximum_subarray():
@@ -34,6 +36,7 @@ export default [
   return`,
   },
   {
+    id: 'TSFirstNode',
     languageId: 'typescript',
     format: 'JSDoc',
     code: `export const getFirstNodeByValue = (node: TreeNode | null, value: string): TreeNode | null => {
@@ -53,6 +56,7 @@ export default [
 }`,
   },
   {
+    id: 'binarySearch',
     languageId: 'javascript',
     format: 'JSDoc',
     code: `function binarySearch(array, target, start = 0, end = array.length - 1) {
@@ -72,6 +76,7 @@ export default [
   };`,
   },
   {
+    id: 'orgToken',
     languageId: 'javascript',
     format: 'Google',
     code: `async function getOrganizationFromToken(token) {

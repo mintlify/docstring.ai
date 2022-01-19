@@ -93,6 +93,7 @@ function classNames(...classes: any) {
 export default function Example() {
   const [code, setCode] = useState('');
   const [outputDisplay, setOutputDisplay] = useState('');
+  const [lastExampleId, setLastExampleId] = useState('');
   const [selectedLanguage, setSelectedLanguage] = useState(languagesDropdown[0]);
   const [selectedFormat, setSelectedFormat] = useState(formats[0]);
   const [commentsEnabled, setCommentsEnabled] = useState(true);
@@ -126,7 +127,8 @@ export default function Example() {
   };
 
   const onGenerateExample = () => {
-    const randomExample = EXAMPLES[Math.floor(Math.random() * EXAMPLES.length)];
+    const filteredExamples = EXAMPLES.filter((example) => example.id !== lastExampleId);
+    const randomExample = filteredExamples[Math.floor(Math.random() * filteredExamples.length)];
     const foundLanguage = languagesDropdown.find(
       (languageOption) => languageOption.id === randomExample.languageId,
     );
@@ -138,6 +140,7 @@ export default function Example() {
     setSelectedLanguage(foundLanguage);
     setSelectedFormat(foundFormat);
     setCode(randomExample.code);
+    setLastExampleId(randomExample.id);
   };
 
   const onClickGenerate = async () => {
