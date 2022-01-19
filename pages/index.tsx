@@ -80,7 +80,7 @@ const languagesDropdown: LanguageOption[] = [
 ];
 
 const formats = [
-  { name: 'Auto-detect', id: 'auto' },
+  { name: 'Auto-detect', id: 'Auto-detect' },
   { name: 'JSDoc', id: 'JSDoc' },
   { name: 'reST', id: 'reST' },
   { name: 'Google', id: 'Google' },
@@ -154,7 +154,7 @@ export default function Example() {
         languageId: selectedLanguage.id,
         commented: commentsEnabled,
         userId: fingerprintID || 'web',
-        docStyle: 'Auto-generate',
+        docStyle: selectedFormat.id,
         context: code,
         source: 'web',
       });

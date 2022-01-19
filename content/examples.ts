@@ -14,26 +14,20 @@ export default [
   return ltrs[new_index]`,
   },
   {
-    id: 'maximum',
+    id: 'treeVertex',
     languageId: 'python',
     format: 'reST',
-    code: `def maximum_subarray():
-  str_input = (','.join(i for i in sys.argv[1:])).strip()
-  if str_input == "":
-    print("Usage: Please provide a list of at least two integers to sort in the format: '1, 2, 3, 4, 5'")
-    return
-
-  arr = [int(num) for num in str_input.split(',')]
-  ans = 0
-  curr_sum = 0
-  for i in range(len(arr)):
-    if (curr_sum + arr[i] > 0):
-        curr_sum += arr[i]
-    else:
-        curr_sum = 0
-    ans = max(ans, curr_sum)
-  print(ans)
-  return`,
+    code: `def create_tree(tree, vertex_values):
+  nodes = {value: TreeNode(value) for value in vertex_values}
+  for i, row in enumerate(tree):
+    node = nodes[vertex_values[i]]
+    for j, is_connected in enumerate(row):
+      if j <= i:
+        continue
+      if is_connected:
+        node.connected.append(nodes[vertex_values[j]])
+  head = nodes[vertex_values[0]]
+  return head`,
   },
   {
     id: 'TSFirstNode',
