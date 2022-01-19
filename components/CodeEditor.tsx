@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import Editor from 'react-simple-code-editor';
-import { highlight, languages, Grammar } from 'prismjs';
-import 'prismjs/themes/prism.css';
+import { highlight, Grammar } from 'prismjs';
+import 'prismjs/themes/prism-dark.css';
 import 'prismjs/components/prism-typescript';
 
 type CodeEditorProps = {
@@ -9,7 +9,7 @@ type CodeEditorProps = {
   // eslint-disable-next-line no-unused-vars
   setCode: (code: string) => void;
   placeholder: string;
-  language: string;
+  languageGrammar: Grammar;
 }
 
 const hightlightWithLineNumbers = (
@@ -20,15 +20,14 @@ const hightlightWithLineNumbers = (
   .join('\n');
 
 export default function CodeEditor({
-  code, setCode, placeholder, language,
+  code, setCode, placeholder, languageGrammar,
 }: CodeEditorProps) {
-  console.log(language);
   return (
     <Editor
       value={code}
       onValueChange={(codeUpdated) => setCode(codeUpdated)}
       highlight={(codeToBeHighlighted) => hightlightWithLineNumbers(
-        codeToBeHighlighted, languages.typescript, 'TypeScript',
+        codeToBeHighlighted, languageGrammar, 'TypeScript',
       )}
       padding={12}
       textareaId="codeArea"

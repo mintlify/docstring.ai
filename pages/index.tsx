@@ -2,14 +2,22 @@ import { useState, Fragment } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Menu, Transition, Disclosure } from '@headlessui/react';
+import axios from 'axios';
+import {
+  Menu, Transition, Disclosure, Switch,
+} from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/solid';
 import {
   MailIcon, PencilAltIcon,
 } from '@heroicons/react/outline';
+import { languages, Grammar } from 'prismjs';
 import CodeEditor from '../components/CodeEditor';
 import Output from '../components/Output';
 import vscode from '../assets/vsc.svg';
+
+const ENDPOINT = process.env.NODE_ENV === 'development'
+  ? 'http://localhost:5000'
+  : 'https://api.mintlify.com';
 
 const footer = {
   main: [
@@ -55,6 +63,26 @@ const footer = {
   ],
 };
 
+type LanguageOption = {
+  name: string;
+  id: string;
+  grammar: Grammar;
+}
+
+const languagesDropdown: LanguageOption[] = [
+  { name: 'Auto-detect', id: 'auto', grammar: languages.plain },
+  { name: 'JavaScript', id: 'javascript', grammar: languages.javascript },
+  { name: 'TypeScript', id: 'typescript', grammar: languages.typescript },
+  { name: 'Python', id: 'python', grammar: languages.python },
+];
+
+const formats = [
+  { name: 'Auto-detect', id: 'auto' },
+  { name: 'JSDoc', id: 'JSDoc' },
+  { name: 'reST', id: 'reST' },
+  { name: 'Google', id: 'Google' },
+];
+
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(' ');
 }
@@ -62,12 +90,59 @@ function classNames(...classes: any) {
 export default function Example() {
   const [code, setCode] = useState('');
   const [outputDisplay, setOutputDisplay] = useState('');
+  const [selectedLanguage, setSelectedLanguage] = useState(languagesDropdown[0]);
+  const [selectedFormat, setSelectedFormat] = useState(formats[0]);
+  const [commentsEnabled, setCommentsEnabled] = useState(true);
+  const [isGenerating, setIsGenerating] = useState(false);
 
-  const codeOnChange = async (newCode: string) => {
+  const onCodeChange = async (newCode: string) => {
     setCode(newCode);
+    if (newCode.length < 30) return;
 
-    const detectedLanguage = '';
-    setOutputDisplay(detectedLanguage);
+    const { data: { language } }: { data: { language: string } } = await axios.post('https://figstack.uc.r.appspot.com/infer', {
+      code: newCode.trim(),
+    });
+
+    const languageToUse = languagesDropdown.find(
+      (languageOption) => languageOption.name === language,
+    );
+
+    if (languageToUse) {
+      setSelectedLanguage({
+        ...languageToUse,
+        name: `${language} (auto)`,
+      });
+      return;
+    }
+
+    setSelectedLanguage({
+      name: `${language} (auto)`,
+      id: language,
+      grammar: languages.plain,
+    });
+  };
+
+  const onClickGenerate = async () => {
+    setIsGenerating(true);
+    setOutputDisplay('');
+
+    try {
+      const { data: { docstring } }: { data: { docstring: string } } = await axios.post(`${ENDPOINT}/web/write`, {
+        code,
+        languageId: selectedLanguage.id,
+        commented: commentsEnabled,
+        userId: 'web',
+        docStyle: 'Auto-generate',
+        context: code,
+      });
+
+      setOutputDisplay(docstring);
+    } catch (error: any) {
+      const errorMessage = error.response?.data.error || 'An enexpected error occurred';
+      alert(errorMessage);
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   return (
@@ -125,28 +200,28 @@ export default function Example() {
             <header className="relative py-6">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h1 className="text-2xl font-bold text-white">Documentation Writer</h1>
-                <p className="mt-1 text-gray-300">Add some code to get started</p>
+                <p className="mt-1 text-gray-200">Add some code to get started</p>
               </div>
             </header>
           </>
         )}
       </Disclosure>
-      <main className="relative -mt-32">
+      <main className="relative -mt-32 z-10">
         <div className="max-w-screen-xl mx-auto pb-6 px-4 sm:px-6 lg:pb-16 lg:px-8">
           <div className="rounded-lg overflow-hidden">
             <div className="grid sm:grid-cols-2 sm:gap-4">
               <div className="h-full">
                 <CodeEditor
                   code={code}
-                  setCode={codeOnChange}
+                  setCode={onCodeChange}
                   placeholder="Type or paste code here"
-                  language={outputDisplay}
+                  languageGrammar={selectedLanguage.grammar}
                 />
               </div>
               <div className="h-full mt-4 sm:m-0">
                 <Output
                   output={outputDisplay}
-                  isLoading={false}
+                  isLoading={isGenerating}
                 />
               </div>
             </div>
@@ -159,8 +234,10 @@ export default function Example() {
                     <p className="text-sm text-gray-600 mb-1 font-medium">Language</p>
                     <Menu as="div" className="relative inline-block text-left">
                       <div>
-                        <Menu.Button className="inline-flex justify-center w-full rounded-md border border-gray-200 shadow-sm px-2 py-1 bg-white text-sm text-gray-700 hover:bg-gray-50 hover:border-gray-300">
-                          JavaScript (auto)
+                        <Menu.Button className="inline-flex items-stretch w-40 rounded-md border border-gray-200 shadow-sm px-2 py-1 bg-white text-sm text-gray-700 hover:bg-gray-50 hover:border-gray-300">
+                          <div className="flex-1 text-left text-gray-700">
+                            {selectedLanguage.name}
+                          </div>
                           <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
                         </Menu.Button>
                       </div>
@@ -174,20 +251,22 @@ export default function Example() {
                         leaveFrom="transform opacity-100 scale-100"
                         leaveTo="transform opacity-0 scale-95"
                       >
-                        <Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <Menu.Items className="origin-top-right w-40 absolute right-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                           <div className="py-1">
-                            <Menu.Item>
-                              {({ active }) => (
-                                <span
+                            {languagesDropdown.map((language) => (
+                              <Menu.Item key={language.id}>
+                                <button
+                                  type="button"
+                                  onClick={() => setSelectedLanguage(language)}
                                   className={classNames(
-                                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                    'block px-4 py-2 text-sm',
+                                    selectedLanguage.id === language.id ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                    'block px-4 py-2 text-sm w-full text-left hover:bg-gray-100',
                                   )}
                                 >
-                                  Account settings
-                                </span>
-                              )}
-                            </Menu.Item>
+                                  {language.name}
+                                </button>
+                              </Menu.Item>
+                            ))}
                           </div>
                         </Menu.Items>
                       </Transition>
@@ -197,8 +276,10 @@ export default function Example() {
                     <p className="text-sm text-gray-600 mb-1 font-medium">Format</p>
                     <Menu as="div" className="relative inline-block text-left">
                       <div>
-                        <Menu.Button className="inline-flex justify-center w-full rounded-md border border-gray-200 shadow-sm px-2 py-1 bg-white text-sm text-gray-700 hover:bg-gray-50 hover:border-gray-300">
-                          JSDoc (auto)
+                        <Menu.Button className="inline-flex justify-center w-32 rounded-md border border-gray-200 shadow-sm px-2 py-1 bg-white text-sm hover:bg-gray-50 hover:border-gray-300">
+                          <div className="flex-1 text-left text-gray-700">
+                            {selectedFormat.name}
+                          </div>
                           <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
                         </Menu.Button>
                       </div>
@@ -212,35 +293,80 @@ export default function Example() {
                         leaveFrom="transform opacity-100 scale-100"
                         leaveTo="transform opacity-0 scale-95"
                       >
-                        <Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <Menu.Items className="origin-top-right w-32 absolute right-0 mt-2 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
                           <div className="py-1">
-                            <Menu.Item>
-                              {({ active }) => (
-                                <span
-                                  className={classNames(
-                                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                    'block px-4 py-2 text-sm',
-                                  )}
-                                >
-                                  Account settings
-                                </span>
-                              )}
-                            </Menu.Item>
+                            {
+                              formats.map((format) => (
+                                <Menu.Item key={format.id}>
+                                  <button
+                                    type="button"
+                                    onClick={() => setSelectedFormat(format)}
+                                    className={classNames(
+                                      format.id === selectedFormat.id ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                      'block px-4 py-2 text-sm w-full text-left',
+                                    )}
+                                  >
+                                    {format.name}
+                                  </button>
+                                </Menu.Item>
+                              ))
+                            }
                           </div>
                         </Menu.Items>
                       </Transition>
                     </Menu>
                   </div>
+                  <div>
+                    <p className="text-sm text-gray-600 mb-1 font-medium">Commented</p>
+                    <div className="mt-2 flex">
+                      <Switch
+                        checked={commentsEnabled}
+                        onChange={setCommentsEnabled}
+                        className="flex-shrink-0 group relative rounded-full inline-flex items-center justify-center h-5 w-10 cursor-pointer"
+                      >
+                        <span className="sr-only">Use setting</span>
+                        <span aria-hidden="true" className="pointer-events-none absolute bg-white w-full h-full rounded-md" />
+                        <span
+                          aria-hidden="true"
+                          className={classNames(
+                            commentsEnabled ? 'bg-primary' : 'bg-gray-200',
+                            'pointer-events-none absolute h-4 w-9 mx-auto rounded-full transition-colors ease-in-out duration-200',
+                          )}
+                        />
+                        <span
+                          aria-hidden="true"
+                          className={classNames(
+                            commentsEnabled ? 'translate-x-5' : 'translate-x-0',
+                            'pointer-events-none absolute left-0 inline-block h-5 w-5 border border-gray-200 rounded-full bg-white shadow transform ring-0 transition-transform ease-in-out duration-200',
+                          )}
+                        />
+                      </Switch>
+                    </div>
+                  </div>
                   <button
                     type="button"
-                    className="inline-flex space-x-1 items-center px-4 py-2 text-sm rounded-md text-green-600 bg-green-500 bg-opacity-25 hover:bg-opacity-40 duration-200"
+                    className="relative flex w-32 space-x-1 justify-center items-center px-4 py-2 text-sm rounded-md text-green-600 bg-green-500 bg-opacity-25 hover:bg-opacity-40 duration-200"
+                    onClick={onClickGenerate}
                   >
-                    <div>
-                      Write Docs
-                    </div>
-                    <div>
-                      <PencilAltIcon className="h-4 w-4" />
-                    </div>
+                    {
+                      isGenerating ? (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                          </svg>
+                        </div>
+                      ) : (
+                        <>
+                          <div>
+                            Write Docs
+                          </div>
+                          <div>
+                            <PencilAltIcon className="h-4 w-4" />
+                          </div>
+                        </>
+                      )
+                    }
                   </button>
                 </span>
               </span>
@@ -248,7 +374,7 @@ export default function Example() {
           </div>
         </div>
       </main>
-      <footer className="relative pb-8 z-10 bottom-0 w-full">
+      <footer className="relative pb-8 bottom-0 w-full">
         <div className="max-w-7xl mx-auto px-4 overflow-hidden sm:px-6 lg:px-8">
           <div className="mt-8 flex justify-center space-x-6">
             {footer.social.map((item) => (
