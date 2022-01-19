@@ -137,6 +137,7 @@ export default function Example() {
         userId: fingerprintID || 'web',
         docStyle: 'Auto-generate',
         context: code,
+        source: 'web',
       });
 
       setOutputDisplay(docstring);
