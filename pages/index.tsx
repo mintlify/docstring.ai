@@ -178,7 +178,7 @@ export default function Example() {
           name="description"
           content="Hate writing documentation? Let docstring.ai write it for you ✍️"
         />
-        <meta property="og:title" content="DocstringAI - Automated Documentation Write" />
+        <meta property="og:title" content="DocstringAI - Automated Documentation Writer" />
         <meta property="og:image" content="https://res.cloudinary.com/mintlify/image/upload/v1642572331/thumbnail_glhmjx.jpg" />
         <meta property="og:description" content="Hate writing documentation? Let docstring.ai write it for you ✍️" />
         <meta property="og:url" content="https://www.docstring.ai" />
