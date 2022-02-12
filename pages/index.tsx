@@ -19,6 +19,9 @@ import vscode from '../assets/vsc.svg';
 import logo from '../assets/mintlify.svg';
 import EXAMPLES from '../content/examples';
 import 'react-toastify/dist/ReactToastify.css';
+import 'prismjs/components/prism-python';
+import 'prismjs/components/prism-java';
+import 'prismjs/components/prism-kotlin';
 
 const ENDPOINT = process.env.NODE_ENV === 'development'
   ? 'http://localhost:5000'
@@ -78,6 +81,8 @@ const languagesDropdown: LanguageOption[] = [
   { name: 'Auto-detect', id: 'auto', grammar: languages.plain },
   { name: 'JavaScript', id: 'javascript', grammar: languages.javascript },
   { name: 'TypeScript', id: 'typescript', grammar: languages.typescript },
+  { name: 'Java', id: 'java', grammar: languages.java },
+  { name: 'Kotlin', id: 'kotlin', grammar: languages.kotlin },
   { name: 'Python', id: 'python', grammar: languages.python },
 ];
 
@@ -85,6 +90,9 @@ const formats = [
   { name: 'Auto-detect', id: 'Auto-detect' },
   { name: 'JSDoc', id: 'JSDoc' },
   { name: 'reST', id: 'reST' },
+  { name: 'NumPy', id: 'NumPy' },
+  { name: 'DocBlock', id: 'DocBlock' },
+  { name: 'Javadoc', id: 'Javadoc' },
   { name: 'Google', id: 'Google' },
 ];
 
