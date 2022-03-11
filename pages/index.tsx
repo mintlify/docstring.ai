@@ -1,10 +1,10 @@
 import { useState, Fragment } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
-import Script from 'next/script';
 import Link from 'next/link';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
+import { v4 as uuidv4 } from 'uuid';
 import {
   Menu, Transition, Disclosure, Switch,
 } from '@headlessui/react';
@@ -109,6 +109,15 @@ export default function Example() {
   const [commentsEnabled, setCommentsEnabled] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
 
+  let userId = null;
+  if (typeof window !== 'undefined') {
+    userId = window.localStorage.getItem('id');
+    if (!userId) {
+      userId = uuidv4();
+      window.localStorage.setItem('id', userId);
+    }
+  }
+
   const onCodeChange = async (newCode: string) => {
     setCode(newCode);
     if (newCode.length < 30) return;
@@ -158,12 +167,11 @@ export default function Example() {
     setOutputDisplay('');
 
     try {
-      const fingerprintID = window.localStorage.getItem('id');
       const { data: { docstring } }: { data: { docstring: string } } = await axios.post(`${ENDPOINT}/web/write`, {
         code,
         languageId: selectedLanguage.id,
         commented: commentsEnabled,
-        userId: fingerprintID || 'web',
+        userId: window.localStorage.getItem('id') || uuidv4(),
         docStyle: selectedFormat.id,
         context: code,
         source: 'web',
@@ -585,26 +593,6 @@ export default function Example() {
         </div>
       </footer>
       <ToastContainer position="bottom-right" limit={1} autoClose={3000} />
-      <Script>
-        {`// Initialize the agent at application startup.
-        fpPromise = new Promise((resolve, reject) => {
-          const script = document.createElement('script');
-          script.onload = resolve;
-          script.onerror = reject;
-          script.async = true;
-          script.src = 'https://cdn.jsdelivr.net/npm/'
-            + '@fingerprintjs/fingerprintjs-pro@3/dist/fp.min.js';
-          document.head.appendChild(script);
-        })
-          .then(() => FingerprintJS.load({
-            token: 'ztukxULTMxKRDyYP0GDc'
-          }));
-
-        // Get the visitor identifier when you need it.
-        fpPromise
-          .then(fp => fp.get())
-          .then(result => window.localStorage.setItem('id', result.visitorId));`}
-      </Script>
     </div>
   );
 }
