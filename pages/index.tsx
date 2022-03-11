@@ -23,6 +23,31 @@ import 'prismjs/components/prism-python';
 import 'prismjs/components/prism-java';
 import 'prismjs/components/prism-kotlin';
 
+type LanguageOption = {
+  name: string;
+  id: string;
+  grammar: Grammar;
+}
+
+const languagesDropdown: LanguageOption[] = [
+  { name: 'Auto-detect', id: 'auto', grammar: languages.plain },
+  { name: 'JavaScript', id: 'javascript', grammar: languages.javascript },
+  { name: 'TypeScript', id: 'typescript', grammar: languages.typescript },
+  { name: 'Java', id: 'java', grammar: languages.java },
+  { name: 'Kotlin', id: 'kotlin', grammar: languages.kotlin },
+  { name: 'Python', id: 'python', grammar: languages.python },
+];
+
+const formats = [
+  { name: 'Auto-detect', id: 'Auto-detect' },
+  { name: 'JSDoc', id: 'JSDoc' },
+  { name: 'reST', id: 'reST' },
+  { name: 'NumPy', id: 'NumPy' },
+  { name: 'DocBlock', id: 'DocBlock' },
+  { name: 'Javadoc', id: 'Javadoc' },
+  { name: 'Google', id: 'Google' },
+];
+
 const ENDPOINT = process.env.NODE_ENV === 'development'
   ? 'http://localhost:5000'
   : 'https://api.mintlify.com';
@@ -71,36 +96,42 @@ const footer = {
   ],
 };
 
-type LanguageOption = {
-  name: string;
-  id: string;
-  grammar: Grammar;
-}
+const classNames = (...classes: any) => classes.filter(Boolean).join(' ');
 
-const languagesDropdown: LanguageOption[] = [
-  { name: 'Auto-detect', id: 'auto', grammar: languages.plain },
-  { name: 'JavaScript', id: 'javascript', grammar: languages.javascript },
-  { name: 'TypeScript', id: 'typescript', grammar: languages.typescript },
-  { name: 'Java', id: 'java', grammar: languages.java },
-  { name: 'Kotlin', id: 'kotlin', grammar: languages.kotlin },
-  { name: 'Python', id: 'python', grammar: languages.python },
-];
+// Functions to check workers
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const formats = [
-  { name: 'Auto-detect', id: 'Auto-detect' },
-  { name: 'JSDoc', id: 'JSDoc' },
-  { name: 'reST', id: 'reST' },
-  { name: 'NumPy', id: 'NumPy' },
-  { name: 'DocBlock', id: 'DocBlock' },
-  { name: 'Javadoc', id: 'Javadoc' },
-  { name: 'Google', id: 'Google' },
-];
+const WORKER_STATUS = (id: string) => `${ENDPOINT}/docs/worker/${id}`;
 
-function classNames(...classes: any) {
-  return classes.filter(Boolean).join(' ');
-}
+const checkWorkerStatus = async (id: string): Promise<any> => {
+  const status = await axios.get(WORKER_STATUS(id));
+  return status.data;
+};
 
-export default function Example() {
+export const monitorWorkerStatus = async (id: string) => {
+  let workerStatus = null;
+  let millisecondsPassed = 0;
+  const intervalMs = 100;
+
+  while (workerStatus == null && millisecondsPassed < 25000) {
+    // eslint-disable-next-line no-await-in-loop
+    const status = await checkWorkerStatus(id);
+    if (status.state === 'completed' && status.data) {
+      workerStatus = status.data;
+      break;
+    } else if (status.state === 'failed') {
+      throw new Error('Unable to generate documentation');
+    }
+
+    millisecondsPassed += intervalMs;
+    // eslint-disable-next-line no-await-in-loop
+    await sleep(intervalMs);
+  }
+
+  return workerStatus;
+};
+
+export default function App() {
   const [code, setCode] = useState('');
   const [outputDisplay, setOutputDisplay] = useState('');
   const [lastExampleId, setLastExampleId] = useState('');
@@ -167,7 +198,7 @@ export default function Example() {
     setOutputDisplay('');
 
     try {
-      const { data: { docstring } }: { data: { docstring: string } } = await axios.post(`${ENDPOINT}/web/write`, {
+      const { data: { id } }: { data: { id: string } } = await axios.post(`${ENDPOINT}/docs/write/v3`, {
         code,
         languageId: selectedLanguage.id,
         commented: commentsEnabled,
@@ -177,6 +208,7 @@ export default function Example() {
         source: 'web',
       });
 
+      const { docstring } = await monitorWorkerStatus(id);
       setOutputDisplay(docstring);
     } catch (error: any) {
       const errorMessage = error?.response?.data?.error || 'An enexpected error occurred';
